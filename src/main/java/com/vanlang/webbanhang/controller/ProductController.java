@@ -27,6 +27,14 @@ public class ProductController {
 //        return "/products/products-list";
         return "/products/products-list";
     }
+    @GetMapping("/testcase")
+    public String showProductsApi(Model model) {
+        model.addAttribute("products",productService.getAllProducts());
+//        return "/products/products-list";
+        return "/products/products-management";
+    }
+
+
     // For adding a new product
     @GetMapping("/add")
     public String showAddForm(Model model) {
