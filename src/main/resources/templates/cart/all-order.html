@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title>Orders</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<section layout:fragment="content"><h1>Order Details</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Quantity</th>
+            <th>Customer Name</th>
+            <th>Notes</th>
+            <th>Address</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Payment Method</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="item : ${orders}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.order.customerName}"></td>
+            <td th:text="${item.order.notes}"></td>
+            <td th:text="${item.order.address}"></td>
+            <td th:text="${item.product.name}"></td>
+            <td th:text="${item.product.category.name}"></td>
+            <td th:text="${item.order.phone}"></td>
+            <td th:text="${item.order.email}"></td>
+            <td th:text="${item.order.paymentMethod}"></td>
+
+            <!--            <td th:text="${order.order_details.products.name}"></td>-->
+
+<!--            <td>-->
+<!--                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-success btn-sm">Edit</a>-->
+<!--                <a-->
+<!--                        th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm"-->
+<!--                        onclick="return confirm('Are you sure?')">Delete</a>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form th:action="@{/cart/add}" method="post">-->
+<!--                    <input type="number" name="quantity" min="1" value="1"-->
+<!--                           class="form-control d-inline-block"-->
+<!--                           style="width: 70px;"/>-->
+<!--                    <input type="hidden"-->
+<!--                           th:value="${product.id}"-->
+<!--                           name="productId"/>-->
+<!--                    <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>-->
+<!--                </form>-->
+<!--            </td>-->
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
