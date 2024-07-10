@@ -36,6 +36,8 @@ public class ProductApiController {
         Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found on :: " + id));
         product.setName(productDetails.getName());
         product.setPrice(productDetails.getPrice());
+//     todo   product.setCategory(product.getCategory().getName());
+
         product.setDescription(productDetails.getDescription());
         final Product updatedProduct = productService.addProduct(product);
         return ResponseEntity.ok(updatedProduct);

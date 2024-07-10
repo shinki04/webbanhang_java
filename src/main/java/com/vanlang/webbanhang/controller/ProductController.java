@@ -25,7 +25,7 @@ public class ProductController {
     public String showProducts(Model model) {
         model.addAttribute("products",productService.getAllProducts());
 //        return "/products/products-list";
-        return "/products/products-management";
+        return "/products/products-list";
     }
     // For adding a new product
     @GetMapping("/add")
