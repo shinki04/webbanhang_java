@@ -120,7 +120,7 @@ function saveProduct() {
         name: $('#name').val(),
         price: $('#price').val(),
         // Sửa category thì phải sửa cả 2 tham số
-        category: $('#category').val(),
+        category: { id: $('#category').val() },
         description: $('#description').val()
     };
     const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
