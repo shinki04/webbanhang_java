@@ -1,4 +1,4 @@
-package com.vanlang.webbanhang.security;
+package com.vanlang.webbanhang;
 
 import com.vanlang.webbanhang.service.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -71,7 +71,7 @@ public class SecurityConfig {
                         .userDetailsService(userDetailsService())
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép. Lỗi 401 đúng hơn
+                        .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép.
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .maximumSessions(1) // Giới hạn số phiên đăng nhập.

@@ -39,6 +39,12 @@ public class CategoryService {
     public void addCategory(Category category) {
         categoryRepository.save(category);
     }
+
+    public Category saveCategory(Category category){
+        return categoryRepository.save(category);
+    }
+
+
     /** * Update an existing category. * @param category the category with updated information */
     public void updateCategory(@NonNull Category category) {
         Category existingCategory = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalStateException("Category with ID " + category.getId() + " does not exist."));

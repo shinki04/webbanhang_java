@@ -23,26 +23,49 @@
         <tbody id="productList"></tbody>
     </table>
 
-    <h1 style="color : red" >ERROR</h1>
+    <h2 id="errorMessage" style="color: red; display: none; ">Error: Oops!! Something wrong.</h2>
+
     <!-- Form to add/update a product -->
-    <form id="productForm"><input type="hidden" id="productId">
-        <div class="mb-3"><label for="name" class="form-label">Name:</label> <input type="text" class="form-control"
+    <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" class="form-control"
                                                                                     id="name" required></div>
-        <div class="mb-3"><label for="price" class="form-label">Price:</label> <input type="number" class="form-control"
+        <div class="mb-3">
+            <label for="price" class="form-label">Price:</label>
+            <input type="number" class="form-control"
                                                                                       id="price" required></div>
-        <div class="mb-3"><label for="description" class="form-label">Description:</label> <input type="text"
-                                                                                                  class="form-control"
-                                                                                                  id="description">
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" class="form-control" id="description">
         </div>
 
-        <div class="mb-3"><label for="category.name" class="form-label">Category:</label>
-            <input type="text" class="form-control" id="category.name">
+<!--        todo Sửa thành select option để getID -->
+<!--        <div class="mb-3"><label for="category" class="form-label">Category:</label>-->
+<!--            <input type="text" class="form-control" id="category">-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label for="category" class="form-label">Category:</label>-->
+<!--            <select  class="form-control" id="category">-->
+<!--                <option ></option>-->
+<!--            </select>-->
+<!--        </div>-->
+        <div class="mb-3">
+            <label for="category" class="form-label">Category:</label>
+            <select class="form-control" id="category">
+                <!-- Options will be dynamically generated -->
+            </select>
         </div>
+
+
         <button type="submit" class="btn btn-success">Save Product</button>
     </form>
 </div>
-<script> $(document).ready(function () {
+<script>
+    $(document).ready(function () {
     loadProducts();
+    loadCategories();
     $("#productForm").on('submit', function (e) {
         e.preventDefault();
         saveProduct();
@@ -54,19 +77,50 @@ function loadProducts() {
         url: '/api/products', type: 'GET', success: function (products) {
             let productList = '';
             $.each(products, function (index, product) {
-                productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td>${product.category.name}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
+                productList += `
+                <tr>
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.price}</td>
+                    <td>${product.description}</td>
+                    <td>${product.category.name}</td>
+                    <td>
+                        <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button>
+                        <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>`;
             });
             $('#productList').html(productList);
-        }
+        },
+         error: function () {
+                $('#errorMessage').show();
+            }
     });
 }
+
+function loadCategories() {
+        $.ajax({
+            url: '/api/categories', type: 'GET', success: function (categories) {
+                let categoryOptions = '';
+                $.each(categories, function (index, category) {
+                    categoryOptions += `
+                        <option value="${category.id}">${category.name}</option>`;
+                });
+                $('#category').html(categoryOptions);
+            },
+            error: function () {
+                $('#errorMessage').show();
+            }
+        });
+    }
 
 function saveProduct() {
     const productData = {
         id: $('#productId').val(),
         name: $('#name').val(),
         price: $('#price').val(),
-        //category.name: $('#category.name').val(),
+        // Sửa category thì phải sửa cả 2 tham số
+        category: $('#category').val(),
         description: $('#description').val()
     };
     const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
@@ -79,7 +133,10 @@ function saveProduct() {
         success: function () {
             resetForm();
             loadProducts();
-        }
+        },
+         error: function () {
+                $('#errorMessage').show();
+            }
     });
 }
 
@@ -89,28 +146,34 @@ function editProduct(id) {
             $('#productId').val(product.id);
             $('#name').val(product.name);
             $('#price').val(product.price);
-           // $('#category.name').val(product.category.name);
+            $('#category').val(product.category.id);
             $('#description').val(product.description);
-        }
+        },
+         error: function () {
+                $('#errorMessage').show();
+            }
     });
 }
 
 function deleteProduct(id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        $.ajax({
-            url: `/api/products/${id}`, type: 'DELETE', success: function () {
-                loadProducts();
-            }
-        });
+        if (confirm('Are you sure you want to delete this product?')) {
+            $.ajax({
+                url: `/api/products/${id}`, type: 'DELETE', success: function () {
+                    loadProducts();
+                },
+                error: function () {
+                    $('#errorMessage').show();
+                }
+            });
+        }
     }
-}
-
 function resetForm() {
-    $('#productId').val('');
-    $('#name').val('');
-    $('#price').val('');
-    $('#category.name').val('');
-    $('#description').val('');
-} </script>
+        $('#productId').val('');
+        $('#name').val('');
+        $('#price').val('');
+        $('#category').val('');
+        $('#description').val('');
+    }
+</script>
 </body>
 </html>
