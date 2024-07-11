@@ -16,15 +16,11 @@
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
-            <th>Category Name</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody id="productList"></tbody>
-    </table>
-
-    <h1 style="color : red" >ERROR</h1>
-    <!-- Form to add/update a product -->
+    </table> <!-- Form to add/update a product -->
     <form id="productForm"><input type="hidden" id="productId">
         <div class="mb-3"><label for="name" class="form-label">Name:</label> <input type="text" class="form-control"
                                                                                     id="name" required></div>
@@ -33,10 +29,6 @@
         <div class="mb-3"><label for="description" class="form-label">Description:</label> <input type="text"
                                                                                                   class="form-control"
                                                                                                   id="description">
-        </div>
-
-        <div class="mb-3"><label for="category.name" class="form-label">Category:</label>
-            <input type="text" class="form-control" id="category.name">
         </div>
         <button type="submit" class="btn btn-success">Save Product</button>
     </form>
@@ -54,7 +46,7 @@ function loadProducts() {
         url: '/api/products', type: 'GET', success: function (products) {
             let productList = '';
             $.each(products, function (index, product) {
-                productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td>${product.category.name}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
+                productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
             });
             $('#productList').html(productList);
         }
@@ -66,7 +58,6 @@ function saveProduct() {
         id: $('#productId').val(),
         name: $('#name').val(),
         price: $('#price').val(),
-        //category.name: $('#category.name').val(),
         description: $('#description').val()
     };
     const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
@@ -89,7 +80,6 @@ function editProduct(id) {
             $('#productId').val(product.id);
             $('#name').val(product.name);
             $('#price').val(product.price);
-           // $('#category.name').val(product.category.name);
             $('#description').val(product.description);
         }
     });
@@ -109,7 +99,6 @@ function resetForm() {
     $('#productId').val('');
     $('#name').val('');
     $('#price').val('');
-    $('#category.name').val('');
     $('#description').val('');
 } </script>
 </body>
