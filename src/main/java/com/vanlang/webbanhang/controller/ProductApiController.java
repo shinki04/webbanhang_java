@@ -39,7 +39,8 @@ public class ProductApiController {
 //     todo   product.setCategory(product.getCategory().getName());
 
         product.setDescription(productDetails.getDescription());
-        final Product updatedProduct = productService.addProduct(product);
+        product.setCategory(productDetails.getCategory());
+        final Product updatedProduct = productService.updateProduct(product);
         return ResponseEntity.ok(updatedProduct);
     }
 

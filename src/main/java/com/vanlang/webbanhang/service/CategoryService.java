@@ -26,15 +26,11 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    /*
-      Retrieve a category by its id.
-      @param id the id of the category to retrieve
-     * @return an Optional containing the found category or empty if not found
-     */
 
-       public Optional<Category> getCategoryById(Long id) {
+    public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
+
     /** * Add a new category to the database. * @param category the category to add */
     public void addCategory(Category category) {
         categoryRepository.save(category);
@@ -51,6 +47,7 @@ public class CategoryService {
         existingCategory.setName(category.getName());
         categoryRepository.save(existingCategory);
     }
+
     /** *Delete a category by its id. * @param id the id of the category to delete */
     public void deleteCategory(Long id) {
         if(!categoryRepository.existsById(id)) {
