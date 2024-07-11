@@ -153,7 +153,7 @@ function editProduct(id) {
             $('#description').val(product.description);
 
             // Add an event listener to the form's submit event
-            $('#editProductForm').on('submit', function (event) {
+            $('#productForm').on('submit', function (event) {
                 event.preventDefault(); // Prevent the default form submission
 
                 // Collect the updated form data
