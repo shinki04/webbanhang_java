@@ -74,7 +74,8 @@
 
 function loadProducts() {
     $.ajax({
-        url: '/api/products', type: 'GET', success: function (products) {
+        url: '/api/products', type: 'GET',
+        success: function (products) {
             let productList = '';
             $.each(products, function (index, product) {
                 productList += `
@@ -100,7 +101,8 @@ function loadProducts() {
 
 function loadCategories() {
         $.ajax({
-            url: '/api/categories', type: 'GET', success: function (categories) {
+            url: '/api/categories', type: 'GET',
+            success: function (categories) {
                 let categoryOptions = '';
                 $.each(categories, function (index, category) {
                     categoryOptions += `
@@ -142,7 +144,8 @@ function saveProduct() {
 
 function editProduct(id) {
     $.ajax({
-        url: `/api/products/${id}`, type: 'GET', success: function (product) {
+        url: `/api/products/${id}`, type: 'GET',
+        success: function (product) {
             $('#productId').val(product.id);
             $('#name').val(product.name);
             $('#price').val(product.price);
