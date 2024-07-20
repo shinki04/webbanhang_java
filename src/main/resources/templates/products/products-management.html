@@ -16,7 +16,6 @@
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
-            <th>Category Name</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -31,6 +30,9 @@
         <div class="mb-3">
             <label for="name" class="form-label">Name:</label>
             <input type="text" class="form-control"
+    </table> <!-- Form to add/update a product -->
+    <form id="productForm"><input type="hidden" id="productId">
+        <div class="mb-3"><label for="name" class="form-label">Name:</label> <input type="text" class="form-control"
                                                                                     id="name" required></div>
         <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
@@ -59,6 +61,7 @@
         </div>
 
 
+
         <button type="submit" class="btn btn-success">Save Product</button>
     </form>
 </div>
@@ -74,7 +77,8 @@
 
 function loadProducts() {
     $.ajax({
-        url: '/api/products', type: 'GET', success: function (products) {
+        url: '/api/products', type: 'GET',
+        success: function (products) {
             let productList = '';
             $.each(products, function (index, product) {
                 productList += `
@@ -89,6 +93,7 @@ function loadProducts() {
                         <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button>
                     </td>
                 </tr>`;
+                productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
             });
             $('#productList').html(productList);
         },
@@ -100,7 +105,8 @@ function loadProducts() {
 
 function loadCategories() {
         $.ajax({
-            url: '/api/categories', type: 'GET', success: function (categories) {
+            url: '/api/categories', type: 'GET',
+            success: function (categories) {
                 let categoryOptions = '';
                 $.each(categories, function (index, category) {
                     categoryOptions += `
@@ -207,5 +213,10 @@ function resetForm() {
         $('#description').val('');
     }
 </script>
+    $('#productId').val('');
+    $('#name').val('');
+    $('#price').val('');
+    $('#description').val('');
+} </script>
 </body>
 </html>
