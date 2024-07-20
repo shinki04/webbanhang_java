@@ -41,7 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error", "/products", "/cart", "/cart/**")
+                        .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error", "/products", "/cart", "/cart/**","/api/products","/api/products/**")
                         .permitAll() // Cho phép truy cập không cần xác thực.
                         .requestMatchers("/products/edit/**", "/products/add", "/products/delete")
                         .hasAnyAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập.
@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .permitAll() // API mở cho mọi người dùng.
                         .anyRequest().authenticated() // Bất kỳ yêu cầu nào khác cần xác thực.
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login") // Trang chuyển hướng sau khi đăng xuất.
@@ -80,6 +81,8 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic
                         .realmName("vanlang") // Tên miền cho xác thực cơ bản.
                 )
+                .csrf().disable() // Tắt bảo vệ CSRF (nếu cần).
                 .build(); // Xây dựng và trả về chuỗi lọc bảo mật.
+
     }
 }

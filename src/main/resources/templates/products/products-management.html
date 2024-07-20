@@ -111,6 +111,8 @@ function loadCategories() {
     }
 
 function saveProduct() {
+    // Lấy dữ liệu từ form
+
     const productData = {
         id: $('#productId').val(),
         name: $('#name').val(),
@@ -119,6 +121,9 @@ function saveProduct() {
         category: { id: $('#category').val() },
         description: $('#description').val()
     };
+
+    console.log(productData.category); // Thêm dòng này để kiểm tra dữ liệu
+
     const apiUrl = productData.id ? `/api/products/${productData.id}` : '/api/products';
     const apiType = productData.id ? 'PUT' : 'POST';
     $.ajax({
