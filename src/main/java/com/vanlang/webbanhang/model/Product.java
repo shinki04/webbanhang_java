@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+
 @Setter
 @Getter
 @RequiredArgsConstructor
@@ -20,13 +21,9 @@ public class Product {
     private double price;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
-
-
-
-
 
 
 }
