@@ -46,8 +46,7 @@ public class ProductApiController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found on :: "
-                + id));
+        Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found on :: "+ id));
         productService.deleteProductById(id);
         return ResponseEntity.ok().build();
     }
