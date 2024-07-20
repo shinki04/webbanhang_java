@@ -24,13 +24,7 @@
 
     <h2 id="errorMessage" style="color: red; display: none; ">Error: Oops!! Something wrong.</h2>
 
-    <!-- Form to add/update a product -->
-    <form id="productForm">
-        <input type="hidden" id="productId">
-        <div class="mb-3">
-            <label for="name" class="form-label">Name:</label>
-            <input type="text" class="form-control"
-    </table> <!-- Form to add/update a product -->
+<!-- Form to add/update a product -->
     <form id="productForm"><input type="hidden" id="productId">
         <div class="mb-3"><label for="name" class="form-label">Name:</label> <input type="text" class="form-control"
                                                                                     id="name" required></div>
@@ -93,7 +87,6 @@ function loadProducts() {
                         <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button>
                     </td>
                 </tr>`;
-                productList += `<tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> <td>${product.description}</td> <td> <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button> <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button> </td> </tr>`;
             });
             $('#productList').html(productList);
         },
@@ -213,10 +206,7 @@ function resetForm() {
         $('#description').val('');
     }
 </script>
-    $('#productId').val('');
-    $('#name').val('');
-    $('#price').val('');
-    $('#description').val('');
-} </script>
 </body>
 </html>
+
+
