@@ -8,7 +8,8 @@
 </head>
 <body>
 <div class="container mt-5"><h1>Product Management</h1>
-    <button onclick="loadProducts()" class="btn btn-primary mb-3">Refresh Products</button>
+    <button onclick="loadProducts()" class="btn btn-primary mb-3">Refresh Products</button>    <button onclick="loadProducts()" class="btn btn-primary mb-3">Refresh Products</button>
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -16,6 +17,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -24,29 +26,20 @@
 
     <h2 id="errorMessage" style="color: red; display: none; ">Error: Oops!! Something wrong.</h2>
 
-<!-- Form to add/update a product -->
-    <form id="productForm"><input type="hidden" id="productId">
-        <div class="mb-3"><label for="name" class="form-label">Name:</label> <input type="text" class="form-control"
-                                                                                    id="name" required></div>
+    <!-- Form to add/update a product -->
+    <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="name" required></div>
         <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
-            <input type="number" class="form-control"
-                                                                                      id="price" required></div>
+            <input type="number" class="form-control" id="price" required>
+        </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description:</label>
             <input type="text" class="form-control" id="description">
         </div>
-
-<!--        todo Sửa thành select option để getID -->
-<!--        <div class="mb-3"><label for="category" class="form-label">Category:</label>-->
-<!--            <input type="text" class="form-control" id="category">-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label for="category" class="form-label">Category:</label>-->
-<!--            <select  class="form-control" id="category">-->
-<!--                <option ></option>-->
-<!--            </select>-->
-<!--        </div>-->
         <div class="mb-3">
             <label for="category" class="form-label">Category:</label>
             <select class="form-control" id="category">
@@ -54,9 +47,9 @@
             </select>
         </div>
 
-
-
         <button type="submit" class="btn btn-success">Save Product</button>
+        <button onclick="resetForm()" class="btn btn-primary ">Refresh Form</button>
+
     </form>
 </div>
 <script>
@@ -71,8 +64,11 @@
 
 function loadProducts() {
     $.ajax({
-        url: '/api/products', type: 'GET',
+        url: '/api/products',
+        type: 'GET',
         success: function (products) {
+            console.log(products); // Thêm dòng này để kiểm tra dữ liệu
+
             let productList = '';
             $.each(products, function (index, product) {
                 productList += `
@@ -81,7 +77,7 @@ function loadProducts() {
                     <td>${product.name}</td>
                     <td>${product.price}</td>
                     <td>${product.description}</td>
-                    <td>${product.category.name}</td>
+                    <td>${product.category ? product.category.name : 'No Category' }</td>
                     <td>
                         <button onclick="editProduct(${product.id})" class="btn btn-warning">Edit</button>
                         <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Delete</button>
@@ -98,7 +94,8 @@ function loadProducts() {
 
 function loadCategories() {
         $.ajax({
-            url: '/api/categories', type: 'GET',
+            url: '/api/categories',
+            type: 'GET',
             success: function (categories) {
                 let categoryOptions = '';
                 $.each(categories, function (index, category) {
@@ -141,55 +138,27 @@ function saveProduct() {
 function editProduct(id) {
     // Fetch the product details
     $.ajax({
-        url: `/api/products/${id}`,
-        type: 'GET',
-        success: function (product) {
-            // Populate the form fields
-            $('#productId').val(product.id);
-            $('#name').val(product.name);
-            $('#price').val(product.price);
-            $('#category').val(product.category.id);
-            $('#description').val(product.description);
-
-            // Add an event listener to the form's submit event
-            $('#productForm').on('submit', function (event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                // Collect the updated form data
-                const formData = {
-                    id: product.id,
-                    name: $('#name').val(),
-                    price: $('#price').val(),
-                    category: $('#category').val(),
-                    description: $('#description').val()
-                };
-
-                // Send the updated product data to the server using AJAX
-                $.ajax({
-                    url: `/api/products/${id}`,
-                    type: 'PUT',
-                    data: JSON.stringify(formData),
-                    contentType: 'application/json',
-                    success: function () {
-                        alert('Product updated successfully!');
-                    },
-                    error: function () {
-                        alert('Error updating product. Please try again.');
-                    }
-                });
-            });
-        },
-        error: function () {
-            $('#errorMessage').show();
-        }
-    });
-}
-
+            url: `/api/products/${id}`,
+            type: 'GET',
+            success: function (product) {
+                $('#productId').val(product.id);
+                $('#name').val(product.name);
+                $('#price').val(product.price);
+                $('#category').val(product.category ? product.category.id : '');
+                $('#description').val(product.description);
+            },
+            error: function () {
+                $('#errorMessage').show();
+            }
+        });
+    }
 
 function deleteProduct(id) {
         if (confirm('Are you sure you want to delete this product?')) {
             $.ajax({
-                url: `/api/products/${id}`, type: 'DELETE', success: function () {
+                url: `/api/products/${id}`,
+                type: 'DELETE',
+                success: function () {
                     loadProducts();
                 },
                 error: function () {
